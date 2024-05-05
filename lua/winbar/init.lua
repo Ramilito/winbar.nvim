@@ -1,4 +1,4 @@
-local utils = require("utils")
+local utils = require("winbar.utils")
 local M = {}
 
 local is_empty = function(s)
