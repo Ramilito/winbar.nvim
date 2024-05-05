@@ -1,6 +1,6 @@
 local M = {}
 
-M.setup = function()
+function M.setup()
 	print("HEllo world")
 end
 
