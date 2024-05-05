@@ -39,8 +39,6 @@ function M.get_winbar()
 end
 
 function M.setup()
-	print("HEllo world")
-
 	vim.api.nvim_create_autocmd({ "BufEnter", "VimEnter" }, {
 		group = augroup("winbar"),
 		callback = function()
