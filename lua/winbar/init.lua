@@ -39,7 +39,7 @@ function M.get_winbar()
 end
 
 function M.setup()
-  load = vim.schedule_wrap(M.get_winbar)
+	local get_winbar = vim.schedule_wrap(M.get_winbar)
 	vim.api.nvim_create_autocmd({ "BufEnter", "VimEnter" }, {
 		group = augroup("winbar"),
 		callback = function()
@@ -70,7 +70,7 @@ function M.setup()
 			local config = vim.api.nvim_win_get_config(win_number)
 
 			if config.relative == "" then
-				vim.opt_local.winbar = " " .. load()
+				vim.opt_local.winbar = " " .. get_winbar()
 				-- vim.opt_local.statuscolumn = require("user.statuscolumn")
 			else
 				vim.opt_local.winbar = nil
