@@ -42,7 +42,7 @@ function M.setup()
 	print("HEllo world")
 
 	vim.api.nvim_create_autocmd({ "BufEnter", "VimEnter" }, {
-		group = augroup("status_line"),
+		group = augroup("winbar"),
 		callback = function()
 			local winbar_filetype_exclude = {
 				"help",
@@ -71,7 +71,7 @@ function M.setup()
 			local config = vim.api.nvim_win_get_config(win_number)
 
 			if config.relative == "" then
-				vim.opt_local.winbar = " " .. utils.get_winbar()
+				vim.opt_local.winbar = " " .. M.get_winbar()
 				-- vim.opt_local.statuscolumn = require("user.statuscolumn")
 			else
 				vim.opt_local.winbar = nil
