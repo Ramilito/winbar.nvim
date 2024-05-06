@@ -1,6 +1,5 @@
+local config = require("winbar.config")
 local M = {}
-local vim = vim
-
 local last_diagnostics_result = {}
 
 local mt = {
