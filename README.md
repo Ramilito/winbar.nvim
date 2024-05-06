@@ -28,7 +28,7 @@ return {
       require("winbar").setup({
         -- your configuration comes here, for example:
         icons = true,
-        diagnostics = false,
+        diagnostics = true,
         buf_modified = true
       })
     end
@@ -63,3 +63,26 @@ return {
   },
 }
 ```
+
+## Performance
+
+### Startup
+
+No startup impact since we use VimEnter to register the plugin.
+
+### UI
+On a M2 Mac running nvim ./file
+
+<img width="356" alt="image" src="https://github.com/Ramilito/winbar.nvim/assets/8473233/f48e8f0c-2073-4cda-b222-93ed16bdfdc6">
+
+On a M2 Mac running nvim
+
+<img width="356" alt="image" src="https://github.com/Ramilito/winbar.nvim/assets/8473233/2c9ab552-ee7e-478a-b54a-15b2337797f3">
+
+
+## TODO
+- Dim inactive buffers
+
+## Motivation
+This plugin aims to help people move away from the bufferline way of working but still need to orinent them selves when working with multiple files by giving context.
+The features are inspired by VSCode behaviour, some code is borrowed from bufferline and nvim-web-devicons, thanks for that 🙏.
