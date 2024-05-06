@@ -70,42 +70,34 @@ function M.get_diagnostics()
 	return setmetatable(result, mt)
 end
 
+---@return string, string?
 function M.get_icon()
-	local path = vim.fn.bufname()
+	if not config.options.icons then
+		return "", ""
+	end
 	local filetype = vim.bo.filetype
-	local extension = vim.fn.fnamemodify(path, ":e")
+	local path = vim.fn.bufname()
 
 	if filetype == "" then
 		return "", "Default"
 	end
 
-	local loaded, webdev_icons = pcall(require, "nvim-web-devicons")
 	if vim.fn.isdirectory(path) > 0 then
-		local hl = loaded and "DevIconDefault" or nil
-		return "", hl
+		return "", "Default"
 	end
+
+	local loaded, webdev_icons = pcall(require, "nvim-web-devicons")
 
 	if not loaded then
-		if vim.fn.exists("*WebDevIconsGetFileTypeSymbol") > 0 then
-			return vim.fn.WebDevIconsGetFileTypeSymbol(path), ""
-		end
-		return "", ""
+		return "", "Default"
 	end
-
 	if type == "terminal" then
 		return webdev_icons.get_icon(type)
 	end
 
-	local icon, hl
-	if filetype then
-		-- Don't use a default here so that we fall through to the next case if no icon is found
-		icon, hl = webdev_icons.get_icon_by_filetype(filetype, { default = false })
-	end
-	if not icon then
-		icon, hl = webdev_icons.get_icon(vim.fn.fnamemodify(path, ":t"), extension, {
-			true,
-		})
-	end
+	local icon, hl = webdev_icons.get_icon(vim.fn.fnamemodify(path, ":t"), nil, {
+		default = true,
+	})
 
 	if not icon then
 		return "", ""
