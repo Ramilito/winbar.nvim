@@ -1,5 +1,5 @@
 local utils = require("winbar.utils")
-local vim = vim
+local config = require("winbar.config")
 local M = {}
 
 local function augroup(name)
@@ -40,7 +40,8 @@ function M.get_winbar()
 	return "%*" .. get_file() .. "%*"
 end
 
-function M.setup()
+function M.setup(options)
+  config.setup(options)
 	vim.api.nvim_create_autocmd({ "BufEnter", "VimEnter", "DiagnosticChanged", "BufModifiedSet" }, {
 		group = augroup("winbar"),
 		callback = function()
