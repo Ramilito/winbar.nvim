@@ -16,7 +16,7 @@ function M.get_winbar()
 	end
 
 	if config.options.icons then
-		icon, hl = utils.get_icon()
+		icon, hl = utils.get_icon(M.icons_by_filename, M.icons_by_extension)
 	end
 
 	local sectionA = "  %#" .. hl .. "#" .. icon
@@ -74,6 +74,17 @@ end
 
 function M.setup(options)
 	config.setup(options)
+
+	if options.icons then
+		local has_devicons, devicons = pcall(require, "nvim-web-devicons")
+		if has_devicons then
+			M.icons_by_filename = devicons.get_icons_by_filename()
+			M.icons_by_extension = devicons.get_icons_by_extension()
+		else
+			error("Icons is set to true but dependency nvim-web-devicons is missing")
+		end
+	end
+
 	M.register()
 end
 

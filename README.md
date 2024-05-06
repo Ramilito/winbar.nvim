@@ -10,8 +10,8 @@ Sets a winbar at the top for each file
 - Can opt-out of icons and/or diagnostics
 - Very fast!
 
-## ⚡️ Requirements
-- Technically none, although we use nvim-web-devicons icons, for perfomance reasons we have copied them into the plugin.
+## ⚡️ Dependencies
+- [devicons](https://github.com/nvim-tree/nvim-web-devicons) (icons) -- If ```config.icons = true```
 
 ## 📦 Installation
 
@@ -24,6 +24,7 @@ return {
   {
     "ramilito/winbar.nvim",
     event = "VimEnter", -- Alternatively, BufReadPre if we don't care about the empty file when starting with 'nvim'
+    dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
       require("winbar").setup({
         -- your configuration comes here, for example:

@@ -1,4 +1,3 @@
-local config = require("winbar.config")
 local M = {}
 local last_diagnostics_result = {}
 
@@ -86,7 +85,7 @@ function M.get_highlight_name(data)
 end
 
 ---@return string, string
-function M.get_icon()
+function M.get_icon(icons_by_filename, icons_by_extension)
 	local path = vim.fn.bufname()
 	local filetype = vim.fn.fnamemodify(path, ":t")
 	local ext = vim.fn.fnamemodify(path, ":e")
@@ -98,8 +97,7 @@ function M.get_icon()
 		return "", "Default"
 	end
 
-	local icons = require("winbar.icons")
-	local icon = icons.icons_by_filename[string.lower(filetype)] or icons.icons_by_file_extension[ext]
+	local icon = icons_by_filename[string.lower(filetype)] or icons_by_extension[ext]
 
 	if not icon then
 		return "", ""
