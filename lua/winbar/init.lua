@@ -6,7 +6,8 @@ local function augroup(name)
 	return vim.api.nvim_create_augroup("winbar_" .. name, { clear = true })
 end
 
-local function get_file()
+---@return string
+function M.get_winbar()
 	local diagnostics = utils.get_diagnostics()
 	local icon, hl = utils.get_icon()
 	local sectionA = "  %#" .. hl .. "#" .. icon
@@ -34,10 +35,6 @@ local function get_file()
 
 	local sectionB = "  " .. "%#" .. sectionBhl .. "#" .. "%t" .. sectionC
 	return sectionA .. sectionB .. "%*"
-end
-
-function M.get_winbar()
-	return "%*" .. get_file() .. "%*"
 end
 
 function M.setup(options)
@@ -72,7 +69,7 @@ function M.setup(options)
 			local win_config = vim.api.nvim_win_get_config(win_number)
 
 			if win_config.relative == "" then
-				vim.opt_local.winbar = " " .. M.get_winbar()
+				vim.opt_local.winbar = " " .. "%*" .. M.get_winbar() .. "%*"
 			else
 				vim.opt_local.winbar = nil
 			end
