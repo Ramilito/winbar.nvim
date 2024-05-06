@@ -90,8 +90,7 @@ function M.get_icon()
 	local path = vim.fn.bufname()
 	local filetype = vim.fn.fnamemodify(path, ":t")
 	local ext = vim.fn.fnamemodify(path, ":e")
-
-	if filetype == "" then
+	if vim.bo.filetype == "" then
 		return "", "Default"
 	end
 

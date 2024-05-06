@@ -47,7 +47,7 @@ function M.get_winbar()
 end
 
 function M.register()
-	local events = { "BufEnter", "BufModifiedSet" }
+	local events = { "VimEnter", "BufEnter", "BufModifiedSet" }
 	if config.options.diagnostics then
 		table.insert(events, "DiagnosticChanged")
 	end
@@ -55,25 +55,7 @@ function M.register()
 	vim.api.nvim_create_autocmd(events, {
 		group = augroup("winbar"),
 		callback = function()
-			local winbar_filetype_exclude = {
-				"help",
-				"startify",
-				"dashboard",
-				"packer",
-				"neo-tree",
-				"neogitstatus",
-				"NvimTree",
-				"Trouble",
-				"alpha",
-				"lir",
-				"Outline",
-				"spectre_panel",
-				"toggleterm",
-				"TelescopePrompt",
-				"prompt",
-			}
-
-			if vim.tbl_contains(winbar_filetype_exclude, vim.bo.filetype) then
+			if vim.tbl_contains(config.options.filetype_exclude, vim.bo.filetype) then
 				vim.opt_local.winbar = nil
 				return
 			end

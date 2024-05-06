@@ -3,6 +3,23 @@ local defaults = {
 	icons = true,
 	diagnostics = true,
 	buf_modified = true,
+	filetype_exclude = {
+		"help",
+		"startify",
+		"dashboard",
+		"packer",
+		"neo-tree",
+		"neogitstatus",
+		"NvimTree",
+		"Trouble",
+		"alpha",
+		"lir",
+		"Outline",
+		"spectre_panel",
+		"toggleterm",
+		"TelescopePrompt",
+		"prompt",
+	},
 }
 
 M.options = {}
