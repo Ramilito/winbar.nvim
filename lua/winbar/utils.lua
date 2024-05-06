@@ -70,13 +70,30 @@ function M.get_diagnostics()
 	return setmetatable(result, mt)
 end
 
+local nvim_set_hl = vim.api.nvim_set_hl
+function M.set_up_highlight(icon_data)
+	local hl_group = M.get_highlight_name(icon_data)
+	if hl_group and (icon_data.color or icon_data.cterm_color) then
+		nvim_set_hl(0, M.get_highlight_name(icon_data), {
+			fg = icon_data.color,
+			ctermfg = tonumber(icon_data.cterm_color),
+		})
+	end
+end
+
+function M.get_highlight_name(data)
+	return "DevIcon" .. data.name
+end
+
 ---@return string, string?
 function M.get_icon()
 	if not config.options.icons then
 		return "", ""
 	end
-	local filetype = vim.bo.filetype
+
 	local path = vim.fn.bufname()
+	local filetype = vim.fn.fnamemodify(path, ":t")
+	local ext = vim.fn.fnamemodify(path, ":e")
 
 	if filetype == "" then
 		return "", "Default"
@@ -86,33 +103,15 @@ function M.get_icon()
 		return "", "Default"
 	end
 
-	local loaded, webdev_icons = pcall(require, "nvim-web-devicons")
-
-	if not loaded then
-		return "", "Default"
-	end
-	if type == "terminal" then
-		return webdev_icons.get_icon(type)
-	end
-
-	local icon, hl = webdev_icons.get_icon(vim.fn.fnamemodify(path, ":t"), nil, {
-		default = true,
-	})
+	local icons = require("winbar.icons")
+	local icon = icons.icons_by_filename[string.lower(filetype)] or icons.icons_by_file_extension[ext]
 
 	if not icon then
 		return "", ""
 	end
-	return icon, hl
-end
 
-function M.close_all_but_current()
-	local current = vim.fn.bufnr("%")
-	local buffers = vim.fn.getbufinfo({ buflisted = 1 })
-	for _, buffer in ipairs(buffers) do
-		if buffer.bufnr ~= current then
-			vim.api.nvim_buf_delete(buffer.bufnr, { force = true })
-		end
-	end
+	M.set_up_highlight(icon)
+	return icon.icon, M.get_highlight_name(icon)
 end
 
 return M
