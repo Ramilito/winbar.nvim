@@ -41,8 +41,8 @@ function M.get_winbar()
 end
 
 function M.setup(options)
-  config.setup(options)
-	vim.api.nvim_create_autocmd({ "BufEnter", "VimEnter", "DiagnosticChanged", "BufModifiedSet" }, {
+	config.setup(options)
+	vim.api.nvim_create_autocmd({ "BufEnter", "DiagnosticChanged", "BufModifiedSet" }, {
 		group = augroup("winbar"),
 		callback = function()
 			local winbar_filetype_exclude = {
