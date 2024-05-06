@@ -69,9 +69,9 @@ function M.setup(options)
 			end
 
 			local win_number = vim.api.nvim_get_current_win()
-			local config = vim.api.nvim_win_get_config(win_number)
+			local win_config = vim.api.nvim_win_get_config(win_number)
 
-			if config.relative == "" then
+			if win_config.relative == "" then
 				vim.opt_local.winbar = " " .. M.get_winbar()
 			else
 				vim.opt_local.winbar = nil
