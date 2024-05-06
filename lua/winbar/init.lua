@@ -8,13 +8,22 @@ end
 
 ---@return string
 function M.get_winbar()
-	local diagnostics = utils.get_diagnostics()
-	local icon, hl = utils.get_icon()
+	local diagnostics = {}
+	local icon, hl = "", ""
+
+	if config.options.diagnostics then
+		diagnostics = utils.get_diagnostics()
+	end
+
+	if config.options.icons then
+		icon, hl = utils.get_icon()
+	end
+
 	local sectionA = "  %#" .. hl .. "#" .. icon
 	local sectionBhl = "Normal"
 	local sectionC = ""
 
-	if vim.api.nvim_get_option_value("mod", {}) then
+	if vim.api.nvim_get_option_value("mod", {}) and config.options.buf_modified then
 		if diagnostics.level == "other" then
 			sectionBhl = "BufferCurrentMod"
 			sectionC = "%#" .. sectionBhl .. "#" .. " M"
@@ -37,9 +46,13 @@ function M.get_winbar()
 	return sectionA .. sectionB .. "%*"
 end
 
-function M.setup(options)
-	config.setup(options)
-	vim.api.nvim_create_autocmd({ "BufEnter", "DiagnosticChanged", "BufModifiedSet" }, {
+function M.register()
+	local events = { "BufEnter", "BufModifiedSet" }
+	if config.options.diagnostics then
+		table.insert(events, "DiagnosticChanged")
+	end
+
+	vim.api.nvim_create_autocmd(events, {
 		group = augroup("winbar"),
 		callback = function()
 			local winbar_filetype_exclude = {
@@ -75,6 +88,11 @@ function M.setup(options)
 			end
 		end,
 	})
+end
+
+function M.setup(options)
+	config.setup(options)
+	M.register()
 end
 
 return M

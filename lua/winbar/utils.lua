@@ -85,12 +85,8 @@ function M.get_highlight_name(data)
 	return "DevIcon" .. data.name
 end
 
----@return string, string?
+---@return string, string
 function M.get_icon()
-	if not config.options.icons then
-		return "", ""
-	end
-
 	local path = vim.fn.bufname()
 	local filetype = vim.fn.fnamemodify(path, ":t")
 	local ext = vim.fn.fnamemodify(path, ":e")

@@ -1,6 +1,8 @@
 local M = {}
 local defaults = {
 	icons = true,
+	diagnostics = true,
+	buf_modified = true,
 }
 
 M.options = {}
