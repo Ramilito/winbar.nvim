@@ -6,32 +6,34 @@ local function augroup(name)
 	return vim.api.nvim_create_augroup("winbar_" .. name, { clear = true })
 end
 
-local get_buf_option = function(opt)
-	local status_ok, buf_option = pcall(vim.api.nvim_buf_get_option, 0, opt)
-	if not status_ok then
-		return nil
-	else
-		return buf_option
-	end
-end
-
 local function get_file()
 	local diagnostics = utils.get_diagnostics()
 	local icon, hl = utils.get_icon()
-	local filename = "%#" .. hl .. "#" .. "   " .. " " .. "%t" .. "%*"
-	if icon then
-		filename = "%#" .. hl .. "#" .. icon .. " " .. "%t" .. "%*"
+	local sectionA = "  %#" .. hl .. "#" .. icon
+	local sectionBhl = "Normal"
+	local sectionC = ""
+
+	if vim.api.nvim_get_option_value("mod", {}) then
+		if diagnostics.level == "other" then
+			sectionBhl = "BufferCurrentMod"
+			sectionC = "%#" .. sectionBhl .. "#" .. " M"
+		else
+			sectionC = " M"
+		end
 	end
 
 	if diagnostics.level == "error" then
-		return "%#WinError#" .. " " .. filename
+		sectionBhl = "DiagnosticError"
 	elseif diagnostics.level == "warning" then
-		return "%#WinWarning#" .. " " .. filename
-	elseif get_buf_option("mod") then
-		return "%#WinWarning#" .. " " .. filename
-	else
-		return "  " .. filename
+		sectionBhl = "DiagnosticWarn"
+	elseif diagnostics.level == "info" then
+		sectionBhl = "DiagnosticInfo"
+	elseif diagnostics.level == "hint" then
+		sectionBhl = "DiagnosticHint"
 	end
+
+	local sectionB = "  " .. "%#" .. sectionBhl .. "#" .. "%t" .. sectionC
+	return sectionA .. sectionB .. "%*"
 end
 
 function M.get_winbar()
@@ -39,7 +41,7 @@ function M.get_winbar()
 end
 
 function M.setup()
-	vim.api.nvim_create_autocmd({ "BufEnter", "VimEnter" }, {
+	vim.api.nvim_create_autocmd({ "BufEnter", "VimEnter", "DiagnosticChanged", "BufModifiedSet" }, {
 		group = augroup("winbar"),
 		callback = function()
 			local winbar_filetype_exclude = {
