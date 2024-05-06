@@ -70,11 +70,9 @@ function M.setup()
 
 			if config.relative == "" then
 				vim.opt_local.winbar = " " .. M.get_winbar()
-				-- vim.opt_local.statuscolumn = require("user.statuscolumn")
 			else
 				vim.opt_local.winbar = nil
 			end
-			-- vim.wo.winhighlight = 'Normal:NvimSeparator'
 		end,
 	})
 end
