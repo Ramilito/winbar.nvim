@@ -85,5 +85,5 @@ On an M2 Mac running nvim
 - Dim inactive buffers
 
 ## Motivation
-This plugin aims to help people move away from the bufferline way of working but still need to orient them selves when working with multiple files by giving context.
-The features are inspired by VSCode behaviour, some code is borrowed from bufferline and nvim-web-devicons, thanks for that 🙏.
+This plugin aims to help people move away from the tabline way of working but still need to orient them selves when working with multiple files by giving context.
+The features are inspired by VSCode behaviour, some code is borrowed from bufferline, thanks for that 🙏.
