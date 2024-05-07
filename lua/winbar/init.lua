@@ -77,7 +77,7 @@ function M.setup(options)
 
 	if options.icons then
 		local has_devicons, devicons = pcall(require, "nvim-web-devicons")
-		if has_devicons then
+		if has_devicons and devicons then
 			M.icons_by_filename = devicons.get_icons_by_filename()
 			M.icons_by_extension = devicons.get_icons_by_extension()
 		else
