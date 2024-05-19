@@ -3,6 +3,7 @@ local defaults = {
 	icons = true,
 	diagnostics = true,
 	buf_modified = true,
+	buf_modified_symbol = "M",
 	filetype_exclude = {
 		"help",
 		"startify",
