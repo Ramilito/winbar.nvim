@@ -30,7 +30,13 @@ return {
         -- your configuration comes here, for example:
         icons = true,
         diagnostics = true,
-        buf_modified = true
+        buf_modified = true,
+        dim_inactive = {
+            enabled = false,
+            highlight = "WinbarNC",
+            icons = true, -- whether to dim the icons
+            name = true, -- whether to dim the name
+        }
       })
     end
   },
@@ -80,9 +86,6 @@ On an M2 Mac running nvim
 
 <img width="356" alt="image" src="https://github.com/Ramilito/winbar.nvim/assets/8473233/2c9ab552-ee7e-478a-b54a-15b2337797f3">
 
-
-## TODO
-- Dim inactive buffers
 
 ## Motivation
 This plugin aims to help people move away from the tabline way of working but still need to orient them selves when working with multiple files by giving context.

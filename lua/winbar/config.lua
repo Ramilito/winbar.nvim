@@ -3,6 +3,12 @@ local defaults = {
 	icons = true,
 	diagnostics = true,
 	buf_modified = true,
+	dim_inactive = {
+		enabled = false,
+		highlight = "WinbarNC",
+		icons = true,
+		name = true,
+	},
 	filetype_exclude = {
 		"help",
 		"startify",
