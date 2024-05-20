@@ -31,6 +31,9 @@ return {
         icons = true,
         diagnostics = true,
         buf_modified = true,
+        buf_modified_symbol = "M",
+        -- or use an icon
+        -- buf_modified_symbol = "●"
         dim_inactive = {
             enabled = false,
             highlight = "WinbarNC",

@@ -29,12 +29,12 @@ function M.get_winbar(opts)
 	local sectionBhl = "Winbar"
 	local sectionC = ""
 
-	if vim.api.nvim_get_option_value("mod", {}) and config.options.buf_modified then
+	if vim.api.nvim_get_option_value("mod", {}) and config.options.buf_modified_symbol then
 		if diagnostics.level == "other" then
 			sectionBhl = "BufferCurrentMod"
-			sectionC = "%#" .. sectionBhl .. "#" .. " M"
+			sectionC = "%#" .. sectionBhl .. "# " .. config.options.buf_modified_symbol
 		else
-			sectionC = " M"
+			sectionC = " " .. config.options.buf_modified_symbol
 		end
 	end
 
