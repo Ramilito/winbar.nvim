@@ -7,9 +7,10 @@ local function augroup(name)
 end
 
 ---@return string
-function M.get_winbar()
+function M.get_winbar(opts)
 	local diagnostics = {}
 	local icon, hl = "", ""
+	local should_dim = not opts.active and config.options.dim_inactive.enabled
 
 	if config.options.diagnostics then
 		diagnostics = utils.get_diagnostics()
@@ -19,8 +20,13 @@ function M.get_winbar()
 		icon, hl = utils.get_icon(M.icons_by_filename, M.icons_by_extension)
 	end
 
+	-- don't highlight icon if the window is not active
+	if should_dim and config.options.dim_inactive.icons then
+		hl = config.options.dim_inactive.highlight
+	end
+
 	local sectionA = "  %#" .. hl .. "#" .. icon
-	local sectionBhl = "Normal"
+	local sectionBhl = "Winbar"
 	local sectionC = ""
 
 	if vim.api.nvim_get_option_value("mod", {}) and config.options.buf_modified_symbol then
@@ -42,19 +48,24 @@ function M.get_winbar()
 		sectionBhl = "DiagnosticHint"
 	end
 
+	-- don't highlight name if the window is not active
+	if should_dim and config.options.dim_inactive.name then
+		sectionBhl = config.options.dim_inactive.highlight
+	end
+
 	local sectionB = "  " .. "%#" .. sectionBhl .. "#" .. "%t" .. sectionC
 	return sectionA .. sectionB .. "%*"
 end
 
 function M.register()
-	local events = { "VimEnter", "BufEnter", "BufModifiedSet" }
+	local events = { "VimEnter", "BufEnter", "BufModifiedSet", "WinEnter", "WinLeave" }
 	if config.options.diagnostics then
 		table.insert(events, "DiagnosticChanged")
 	end
 
 	vim.api.nvim_create_autocmd(events, {
 		group = augroup("winbar"),
-		callback = function()
+		callback = function(args)
 			if vim.tbl_contains(config.options.filetype_exclude, vim.bo.filetype) then
 				vim.opt_local.winbar = nil
 				return
@@ -64,7 +75,7 @@ function M.register()
 			local win_config = vim.api.nvim_win_get_config(win_number)
 
 			if win_config.relative == "" then
-				vim.opt_local.winbar = " " .. "%*" .. M.get_winbar() .. "%*"
+				vim.opt_local.winbar = " " .. "%*" .. M.get_winbar({ active = args.event ~= "WinLeave" }) .. "%*"
 			else
 				vim.opt_local.winbar = nil
 			end
