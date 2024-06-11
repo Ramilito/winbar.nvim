@@ -7,13 +7,18 @@ local mt = {
 	end,
 }
 
-local severity_name = vim.tbl_add_reverse_lookup({
+local severity_name = {
 	[1] = "error",
 	[2] = "warning",
 	[3] = "info",
 	[4] = "hint",
 	[5] = "other",
-})
+}
+
+for k, v in pairs(severity_name) do
+	---@diagnostic disable-next-line: assign-type-mismatch
+	severity_name[v] = k
+end
 
 setmetatable(severity_name, {
 	__index = function()
