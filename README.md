@@ -54,7 +54,7 @@ return {
   icons = true,
   diagnostics = true,
   buf_modified = true,
-  dir_levels = 1,
+  dir_levels = 0,
   filetype_exclude = {
     "help",
     "startify",

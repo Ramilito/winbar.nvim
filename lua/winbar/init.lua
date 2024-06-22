@@ -6,13 +6,30 @@ local function augroup(name)
   return vim.api.nvim_create_augroup("winbar_" .. name, { clear = true })
 end
 
-local function get_filename()
-  local path = vim.fn.expand("%:p:h")
-  local parts = vim.split(path, "/")
+local function get_folders()
   local levels = config.options.dir_levels
-  local start = math.max(#parts - levels + 1, 1)
-  local dir_levels = table.concat(vim.list_slice(parts, start, #parts), "/")
-  return dir_levels
+  if levels <= 0 then
+    return ""
+  end
+
+  local path = vim.fn.expand("%:p:h")
+
+  local parts = {}
+  for part in string.gmatch(path, "[^/]+") do
+    table.insert(parts, part)
+  end
+
+  local result = {}
+
+  local start = math.max(#parts - config.options.dir_levels + 1, 0)
+  for i = start, #parts do
+    if i > 0 then
+      table.insert(result, parts[i])
+    end
+  end
+  local folders = table.concat(result, "/")
+
+  return (folders ~= "" and folders .. "/" or "")
 end
 
 ---@return string
@@ -62,7 +79,7 @@ function M.get_winbar(opts)
     sectionBhl = config.options.dim_inactive.highlight
   end
 
-  local sectionB = "  " .. "%#" .. sectionBhl .. "#" .. get_filename() .. sectionC
+  local sectionB = "  " .. "%#" .. sectionBhl .. "#" .. get_folders() .. "%t" .. sectionC
   return sectionA .. sectionB .. "%*"
 end
 
