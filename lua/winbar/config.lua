@@ -17,7 +17,7 @@ local defaults = {
     "dashboard",
     "packer",
     "neo-tree",
-    "neogitstatus",
+    "NeogitStatus",
     "NvimTree",
     "Trouble",
     "alpha",
@@ -27,6 +27,9 @@ local defaults = {
     "toggleterm",
     "TelescopePrompt",
     "prompt",
+    "dap-repl",
+    "aerial",
+    "trouble",
   },
 }
 
