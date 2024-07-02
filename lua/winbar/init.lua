@@ -93,7 +93,6 @@ function M.register()
     group = augroup("winbar"),
     callback = function(args)
       if vim.tbl_contains(config.options.filetype_exclude, vim.bo.filetype) then
-        vim.opt_local.winbar = nil
         return
       end
 
