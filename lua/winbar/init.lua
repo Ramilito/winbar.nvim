@@ -92,7 +92,7 @@ function M.register()
   vim.api.nvim_create_autocmd(events, {
     group = augroup("winbar"),
     callback = function(args)
-      vim.schedule(function()
+      vim.defer_fn(function()
         if vim.tbl_contains(config.options.filetype_exclude, vim.api.nvim_buf_get_option(0, "filetype")) then
           local ok, winbar_set_by_plugin = pcall(vim.api.nvim_buf_get_var, 0, "winbar_set_by_winbar_nvim")
           if ok and winbar_set_by_plugin then
@@ -112,7 +112,7 @@ function M.register()
           vim.opt_local.winbar = nil
           vim.api.nvim_buf_set_var(0, "winbar_set_by_winbar_nvim", false)
         end
-      end)
+      end, 0)
     end,
   })
 end
