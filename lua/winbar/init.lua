@@ -92,18 +92,27 @@ function M.register()
   vim.api.nvim_create_autocmd(events, {
     group = augroup("winbar"),
     callback = function(args)
-      if vim.tbl_contains(config.options.filetype_exclude, vim.bo.filetype) then
-        return
-      end
+      vim.schedule(function()
+        if vim.tbl_contains(config.options.filetype_exclude, vim.api.nvim_buf_get_option(0, "filetype")) then
+          local ok, winbar_set_by_plugin = pcall(vim.api.nvim_buf_get_var, 0, "winbar_set_by_winbar_nvim")
+          if ok and winbar_set_by_plugin then
+            vim.opt_local.winbar = nil
+            vim.api.nvim_buf_set_var(0, "winbar_set_by_winbar_nvim", false)
+          end
+          return
+        end
 
-      local win_number = vim.api.nvim_get_current_win()
-      local win_config = vim.api.nvim_win_get_config(win_number)
+        local win_number = vim.api.nvim_get_current_win()
+        local win_config = vim.api.nvim_win_get_config(win_number)
 
-      if win_config.relative == "" then
-        vim.opt_local.winbar = " " .. "%*" .. M.get_winbar({ active = args.event ~= "WinLeave" }) .. "%*"
-      else
-        vim.opt_local.winbar = nil
-      end
+        if win_config.relative == "" then
+          vim.opt_local.winbar = " " .. "%*" .. M.get_winbar({ active = args.event ~= "WinLeave" }) .. "%*"
+          vim.api.nvim_buf_set_var(0, "winbar_set_by_winbar_nvim", true)
+        else
+          vim.opt_local.winbar = nil
+          vim.api.nvim_buf_set_var(0, "winbar_set_by_winbar_nvim", false)
+        end
+      end)
     end,
   })
 end
