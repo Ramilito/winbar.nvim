@@ -7,7 +7,7 @@ local defaults = {
   dir_levels = 0,
   dim_inactive = {
     enabled = false,
-    highlight = "WinbarNC",
+    highlight = "WinBarNC",
     icons = true,
     name = true,
   },

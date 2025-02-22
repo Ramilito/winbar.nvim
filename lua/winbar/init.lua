@@ -52,7 +52,7 @@ function M.get_winbar(opts)
   end
 
   local sectionA = "  %#" .. hl .. "#" .. icon
-  local sectionBhl = "Winbar"
+  local sectionBhl = "WinBar"
   local sectionC = ""
 
   if vim.api.nvim_get_option_value("mod", {}) and config.options.buf_modified_symbol then
@@ -79,7 +79,7 @@ function M.get_winbar(opts)
     sectionBhl = config.options.dim_inactive.highlight
   end
 
-  local sectionB = "  " .. "%#" .. sectionBhl .. "#" .. get_folders() .. "%t" .. sectionC
+  local sectionB = "  " .. "%#" .. sectionBhl .. "%#" .. get_folders() .. "%t" .. sectionC
   return sectionA .. sectionB .. "%*"
 end
 
@@ -109,7 +109,8 @@ function M.register()
         local win_config = vim.api.nvim_win_get_config(win_number)
 
         if win_config.relative == "" then
-          vim.opt_local.winbar = " " .. "%*" .. M.get_winbar({ active = args.event ~= "WinLeave" }) .. "%*"
+          local bar = " " .. "%*" .. M.get_winbar({ active = args.event ~= "WinLeave" }) .. "%*"
+          vim.api.nvim_set_option_value("winbar", bar, { scope = "local", win = win_number })
           vim.api.nvim_buf_set_var(0, "winbar_set_by_winbar_nvim", true)
         else
           vim.opt_local.winbar = nil
