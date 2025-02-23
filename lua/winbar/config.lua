@@ -13,6 +13,7 @@ local defaults = {
   },
   filetype_exclude = {
 		"k8s_*",
+		"snacks_*",
     "NeogitStatus",
     "NvimTree",
     "Outline",
