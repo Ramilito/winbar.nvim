@@ -79,7 +79,7 @@ function M.get_winbar(opts)
     sectionBhl = config.options.dim_inactive.highlight
   end
 
-  local sectionB = "  " .. "%#" .. sectionBhl .. "%#" .. get_folders() .. "%t" .. sectionC
+  local sectionB = "  " .. "%#" .. sectionBhl .. "#" .. get_folders() .. "%t" .. sectionC
   return sectionA .. sectionB .. "%*"
 end
 
