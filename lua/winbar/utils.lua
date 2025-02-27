@@ -34,13 +34,14 @@ end
 local function get_err_dict(errs)
   local ds = {}
   local max = #severity_name
-  for _, err in ipairs(errs) do
+  for _, err in ipairs(errs["diagnostics"]) do
     if err then
-      -- calculate max severity
       local sev_num = err.severity
       local sev_level = severity_name[sev_num]
-      if sev_num < max then
-        max = sev_num
+      if sev_num then
+        if sev_num < max then
+          max = sev_num
+        end
       end
       -- increment diagnostics dict
       if ds[sev_level] then
@@ -54,13 +55,16 @@ local function get_err_dict(errs)
   return { level = max_severity, errors = ds }
 end
 
-function M.get_diagnostics()
+function M.get_diagnostics(diagnostics)
+  if diagnostics == nil or diagnostics == {} then
+    return {}
+  end
+
   -- if is_disabled(opts.diagnostics) then return setmetatable({}, mt) end
   if is_insert() then
     return setmetatable(last_diagnostics_result, mt)
   end
 
-  local diagnostics = vim.diagnostic.get(0)
   local result = {}
   local d = get_err_dict(diagnostics)
 
