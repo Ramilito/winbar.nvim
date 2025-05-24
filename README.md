@@ -34,6 +34,11 @@ return {
         buf_modified_symbol = "M",
         -- or use an icon
         -- buf_modified_symbol = "●"
+        background_color = "WinBarNC"
+        -- or use a hex code:
+		-- background_color = "#141415",
+        -- or a different highlight:
+        -- background_color = "Statusline"
         dim_inactive = {
             enabled = false,
             highlight = "WinBarNC",

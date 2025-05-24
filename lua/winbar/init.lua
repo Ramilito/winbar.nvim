@@ -132,6 +132,30 @@ function M.setup(options)
     end
   end
 
+  if config.options.background_color then
+    local function resolve_bg_color(color)
+      if color:match("^#%x+$") then
+        return color
+      end
+
+      local hl_id = vim.fn.hlID(color)
+      if hl_id > 0 then
+        local bg = vim.fn.synIDattr(vim.fn.synIDtrans(hl_id), "bg")
+        return (bg and bg ~= "") and bg or nil
+      end
+
+      return nil
+    end
+
+    local final_bg = resolve_bg_color(config.options.background_color)
+    if final_bg then
+      local groups = { "WinBar", "WinBarNC" }
+      for _, group in ipairs(groups) do
+        vim.api.nvim_set_hl(0, group, { bg = final_bg })
+      end
+    end
+  end
+
   M.register()
 end
 
