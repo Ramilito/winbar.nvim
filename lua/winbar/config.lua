@@ -5,6 +5,7 @@ local defaults = {
   buf_modified = true,
   buf_modified_symbol = "M",
   dir_levels = 0,
+  background_color = "WinBarNC",
   dim_inactive = {
     enabled = false,
     highlight = "WinBarNC",
@@ -12,8 +13,8 @@ local defaults = {
     name = true,
   },
   filetype_exclude = {
-		"k8s_*",
-		"snacks_*",
+    "k8s_*",
+    "snacks_*",
     "NeogitStatus",
     "NvimTree",
     "Outline",
