@@ -104,6 +104,18 @@ function M.register()
         end
       end
 
+      if config.options.exclude_if and type(config.options.exclude_if) == "function" then
+        local should_exclude = config.options.exclude_if()
+        if should_exclude then
+          local ok, winbar_set_by_plugin = pcall(vim.api.nvim_buf_get_var, 0, "winbar_set_by_winbar_nvim")
+          if ok and winbar_set_by_plugin then
+            vim.opt_local.winbar = nil
+            vim.api.nvim_buf_set_var(0, "winbar_set_by_winbar_nvim", false)
+          end
+          return
+        end
+      end
+
       local win_number = vim.api.nvim_get_current_win()
       local win_config = vim.api.nvim_win_get_config(win_number)
 
