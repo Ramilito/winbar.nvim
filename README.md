@@ -50,8 +50,7 @@ return {
         -- the function should return true when you want to exclude the winbar, false otherwise.
         -- for example:
 		-- exclude_if = function()
-        --   local is_magenta_window = vim.w.magenta or false
-		--   return is_magenta_window == true
+		--   return vim.w.magenta == true
         -- end
       })
     end
