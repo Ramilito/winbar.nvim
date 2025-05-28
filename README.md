@@ -45,6 +45,13 @@ return {
             icons = true, -- whether to dim the icons
             name = true, -- whether to dim the name
         }
+        exclude_if = nil
+        -- define a function that returns a boolean to exclude winbar in specific circumstances.
+        -- the function should return true when you want to exclude the winbar, false otherwise.
+        -- for example:
+		-- exclude_if = function()
+		--   return vim.w.magenta == true
+        -- end
       })
     end
   },

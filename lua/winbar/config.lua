@@ -34,6 +34,7 @@ local defaults = {
     "toggleterm",
     "trouble",
   },
+  exclude_if = nil,
 }
 
 M.options = {}
