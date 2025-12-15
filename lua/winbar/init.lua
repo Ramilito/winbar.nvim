@@ -132,6 +132,9 @@ function M.register()
 end
 
 function M.setup(options)
+	if vim.g.started_by_firenvim then
+		return
+	end
   config.setup(options)
 
   if config.options.icons then
