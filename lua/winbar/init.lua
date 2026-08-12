@@ -84,7 +84,9 @@ function M.get_winbar(opts)
 end
 
 function M.register()
-  local events = { "VimEnter", "BufEnter", "BufModifiedSet", "WinEnter", "WinLeave" }
+  local events = { "VimEnter", "BufEnter", "WinEnter", "WinLeave" }
+  -- BufModifiedSet was removed in Neovim 0.13, replaced by OptionSet on "modified"
+  table.insert(events, vim.fn.has("nvim-0.13") == 1 and "OptionSet" or "BufModifiedSet")
   if config.options.diagnostics then
     table.insert(events, "DiagnosticChanged")
   end
@@ -92,6 +94,10 @@ function M.register()
   vim.api.nvim_create_autocmd(events, {
     group = augroup("winbar"),
     callback = function(args)
+      if args.event == "OptionSet" and args.match ~= "modified" then
+        return
+      end
+
       local filetype = vim.api.nvim_get_option_value("filetype", { buf = 0 })
       for _, pattern in ipairs(config.options.filetype_exclude) do
         if vim.fn.match(filetype, pattern) ~= -1 then
